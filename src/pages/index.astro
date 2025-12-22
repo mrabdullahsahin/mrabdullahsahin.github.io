@@ -1,0 +1,91 @@
+---
+import { SITE, SKILLSSHOWCASE_CONFIG, SOCIAL_LINKS } from '~/config.ts'
+import { GITHUB_CONFIG, POSTS_CONFIG } from '~/config.ts'
+import Layout from '~/layouts/Layout.astro'
+import SectionDivider from '~/components/base/SectionDivider.astro'
+import GithubContributions from '~/components/base/GithubContributions.tsx'
+import SocialLink from '~/components/base/SocialLink.astro'
+import List from '~/components/posts/card/List.astro'
+import SkillsShowcase from '~/components/base/SkillsShowcase.astro'
+import { getNumPosts, getPinnedPosts } from '~/lib/data'
+
+const { ENABLED, GITHUB_USERNAME, TOOLTIP_ENABLED } = GITHUB_CONFIG
+const { size, type } = POSTS_CONFIG.homePageConfig
+const { SKILLS_ENABLED, SKILLS_DATA } = SKILLSSHOWCASE_CONFIG
+
+let showPosts = []
+const pinnedPosts = await getPinnedPosts()
+const hasPinnedPosts = pinnedPosts.length > 0
+if (hasPinnedPosts) {
+  showPosts = pinnedPosts
+} else {
+  showPosts = await getNumPosts(size)
+}
+---
+
+<Layout title="Readme" description={SITE.description}>
+  <div class="relative z-[1]">
+    <div class="fade-up">
+      <div class="py-8 pb-10 px-6 sm:px-8">
+        <h1 class="flex flex-col gap-2">
+          <span class="text-4xl sm:text-5xl tracking-tight"> Abdullah Sahin </span>
+          <span class="text-muted-foreground font-light text-xl sm:text-2xl block tracking-wide text-balance"> Software Engineer </span>
+        </h1>
+        <div class="pro text-muted-foreground text-pretty">
+          <p>
+            Hello, I’m Abdullah. I’ve been in the software world for over 10 years. Throughout this time, I’ve worked on many different
+            projects and collaborated with various teams, and I’ve realized one thing: what truly makes a project valuable is not just the
+            end result, but the path taken to reach it. <br />
+            <br /> 🇹🇷 -> Turkish Posts <br /> 🇬🇧 -> English Posts
+          </p>
+        </div>
+        <div class="mt-6 flex gap-6">
+          {
+            SOCIAL_LINKS.map((item) => {
+              return (
+                <SocialLink href={item.url} icon={item.icon} aria-label={`Link of ${item.name}`} count={item.count} label="followers" />
+              )
+            })
+          }
+        </div>
+      </div>
+      {
+        ENABLED && (
+          <>
+            <SectionDivider />
+            <div class="py-8 pb-10 px-6 max-md:px-6">
+              <div class="px-2 max-md:px-0">
+                <h2 class="text-2xl sm:text-3xl">Spotlight</h2>
+                <p class="text-muted-foreground mb-6 mt-1">Most recent contributions.</p>
+              </div>
+              <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:load transition:animate="none" />
+            </div>
+          </>
+        )
+      }
+      {
+        SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
+          <>
+            <SectionDivider />
+            <div class="py-8 pb-10 px-6 max-md:px-6">
+              <div class="px-2 max-md:px-0">
+                <h2 class="text-2xl sm:text-3xl tracking-tight">Skills</h2>
+                <p class="text-muted-foreground mb-6 mt-1">Here are some skills I have used:</p>
+              </div>
+              <SkillsShowcase skillsData={SKILLS_DATA} />
+            </div>
+          </>
+        )
+      }
+      <SectionDivider />
+      <div class="py-8 pb-10 px-6 sm:px-8">
+        <h2 class="text-2xl sm:text-3xl tracking-tight">Posts</h2>
+        <p class="text-muted-foreground mb-6 mt-1">
+          {hasPinnedPosts ? `Pinned` : 'Recent'}
+          {showPosts.length} posts, worth a look.
+        </p>
+        <List posts={showPosts} {type} coverLayout={POSTS_CONFIG.homePageConfig?.coverLayout} />
+      </div>
+    </div>
+  </div>
+</Layout>

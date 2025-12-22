@@ -1,26 +1,24 @@
-# Compiled Object files, Static and Dynamic libs (Shared Objects)
-*.o
-*.a
-*.so
+# build output
+dist/
 
-# Folders
-_obj
-_test
+# generated types
+.astro/
 
-# Architecture specific extensions/prefixes
-*.[568vq]
-[568vq].out
+# dependencies
+node_modules/
 
-*.cgo1.go
-*.cgo2.c
-_cgo_defun.c
-_cgo_gotypes.go
-_cgo_export.*
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-_testmain.go
+# environment variables
+.env
+.env.production
 
-*.exe
-*.test
-
-/public
+# macOS-specific files
 .DS_Store
+
+# jetbrains setting folder
+.idea/
