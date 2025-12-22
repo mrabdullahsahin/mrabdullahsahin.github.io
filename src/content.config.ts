@@ -49,6 +49,10 @@ const projects = defineCollection({
       star: z.number(),
       fork: z.number(),
       draft: z.boolean().default(false),
+      // New fields
+      started: z.number().optional(), // Year
+      status: z.enum(['Active', 'Inactive', 'Shut it down', 'Sold it']).default('Active'),
+      postLink: z.string().optional(),
     }),
 })
 

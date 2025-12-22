@@ -29,6 +29,13 @@ const projects = await getAllProjects()
               }
             } catch (e) {}
           }
+          const statusColors = {
+            'Active': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+            'Inactive': 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+            'Shut it down': 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+            'Sold it': 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
+          }
+          const statusColor = statusColors[project.data.status] || 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
 
           return (
             <div>
@@ -52,7 +59,15 @@ const projects = await getAllProjects()
                   class="inline-flex items-center justify-between font-semibold text-lg/relaxed "
                 >
                   {project.data.name}
+                  {project.data.status && (
+                    <span class={cn("text-xs font-medium px-2.5 py-0.5 rounded-full ml-3 border border-transparent", statusColor)}>
+                      {project.data.status}
+                    </span>
+                  )}
                 </a>
+                <div class="text-sm text-muted-foreground mb-2">
+                   {project.data.started && <span>Started: {project.data.started}</span>}
+                </div>
                 <p class="pr-0 sm:pr-14 text-muted-foreground mb-3">{project.data.description}</p>
                 <div class="flex flex-col sm:flex-row gap-4 sm:gap-0 items-start sm:items-center justify-between sm:h-14">
                   <div class="flex gap-4 ">
@@ -96,6 +111,16 @@ const projects = await getAllProjects()
                       >
                         <span class="icon-[mdi--github] size-4" />
                         <span>GitHub</span>
+                      </a>
+                    )}
+                    {project.data.postLink && (
+                      <a
+                        href={project.data.postLink}
+                        target="_blank"
+                        class="hover:text-zinc-600 dark:hover:text-zinc-100 flex items-center gap-1"
+                      >
+                         <span class="icon-[mdi--book-open-variant] size-4" />
+                        <span>Read Story</span>
                       </a>
                     )}
                   </div>

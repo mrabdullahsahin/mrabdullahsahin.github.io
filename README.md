@@ -109,6 +109,28 @@ export const GITHUB_CONFIG = {
 ### Navigation
 Links for the Header and Footer can be managed via `HEADER_LINKS` and `FOOTER_LINKS`.
 
+## Project Management
+
+You can manage your projects in `src/content/projects/`.
+
+### Frontmatter Options
+
+| Field | Type | Description | Example |
+| :--- | :--- | :--- | :--- |
+| `name` | string | Name of the project | `My Project` |
+| `description` | string | Short description | `A cool app.` |
+| `started` | number | Year started (Sorts by new) | `2024` |
+| `status` | string | Project status | `'Active'` |
+| `postLink` | string | Link to blog story | `https://...` or `/posts/...` |
+
+### Status Options
+The `status` field controls the badge color on the project card:
+
+- **Active**: Green (Default)
+- **Inactive**: Red
+- **Shut it down**: Red
+- **Sold it**: Gold / Amber
+
 ## Scripts
 
 | Script | Description |
