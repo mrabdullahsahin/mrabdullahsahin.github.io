@@ -3,7 +3,7 @@ import type {
   CommentConfig,
   GithubConfig,
   Link,
-  PhotosConfig,
+  LogsConfig,
   PostConfig,
   ProjectConfig,
   Site,
@@ -34,8 +34,8 @@ export const HEADER_LINKS: Link[] = [
     url: '/projects',
   },
   {
-    name: 'Photos',
-    url: '/photos',
+    name: 'Logs',
+    url: '/logs',
   },
 ]
 
@@ -57,8 +57,8 @@ export const FOOTER_LINKS: Link[] = [
     url: '/tags',
   },
   {
-    name: 'Photos',
-    url: '/photos',
+    name: 'Logs',
+    url: '/logs',
   },
 ]
 
@@ -255,8 +255,8 @@ export const PROJECTS_CONFIG: ProjectConfig = {
   introduce: 'The details of my projects.',
 }
 
-export const PHOTOS_CONFIG: PhotosConfig = {
-  title: 'Photos',
+export const LOGS_CONFIG: LogsConfig = {
+  title: 'Logs',
   description: 'Here I will record some photos taken in daily life.',
   introduce: 'Here I will record some photos taken in daily life.',
 }

@@ -1,11 +1,11 @@
 ---
-import { PHOTOS_CONFIG } from '~/config'
+import { LOGS_CONFIG } from '~/config'
 import Layout from '~/layouts/Layout.astro'
-import PhotoTimeline from '~/components/photos/PhotoTimeline.astro'
+import LogTimeline from '~/components/logs/LogTimeline.astro'
 import PageTitle from '~/components/base/PageTitle.astro'
-import { PhotosList } from '~/lib/photos'
+import { LogsList } from '~/lib/logs'
 
-const { title, description, introduce } = PHOTOS_CONFIG
+const { title, description, introduce } = LOGS_CONFIG
 ---
 
 <Layout {title} {description}>
@@ -13,11 +13,11 @@ const { title, description, introduce } = PHOTOS_CONFIG
     <PageTitle {title} {introduce} />
     <div class="mt-12">
       {
-        PhotosList.length > 0 ? (
-          <PhotoTimeline photoData={PhotosList} />
+        LogsList.length > 0 ? (
+          <LogTimeline logData={LogsList} />
         ) : (
           <div class="text-muted-foreground mb-4">
-            <p class="text-sm">No photos yet, wait for me to return, OvO</p>
+            <p class="text-sm">No logs yet, wait for me to return, OvO</p>
           </div>
         )
       }

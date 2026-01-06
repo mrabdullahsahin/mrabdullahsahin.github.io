@@ -1,4 +1,4 @@
-import type { PhotoData } from '~/types'
+import type { LogData } from '~/types'
 import cat1 from '~/assets/photos/cat1.webp'
 import cat2 from '~/assets/photos/cat2.webp'
 import cat3 from '~/assets/photos/cat3.webp'
@@ -9,7 +9,7 @@ import dqh3 from '~/assets/photos/dqh3.jpg'
 import zs1 from '~/assets/photos/zs1.webp'
 import zs2 from '~/assets/photos/zs2.webp'
 
-export const PhotosList: PhotoData[] = [
+export const LogsList: LogData[] = [
   {
     title: 'KonyaHackerSpace',
     icon: {

@@ -218,7 +218,7 @@ export interface Photo {
  * @property {string} description - 页面描述 / Page description
  * @property {string} introduce - 页面介绍 / Page introduction
  */
-export interface PhotosConfig {
+export interface LogsConfig {
   title: string
   description: string
   introduce: string
@@ -226,7 +226,7 @@ export interface PhotosConfig {
 
 export type TimelineIconType = 'emoji' | 'icon' | 'color' | 'number' | 'image'
 
-export interface PhotoData {
+export interface LogData {
   title: string
   icon: {
     type: TimelineIconType

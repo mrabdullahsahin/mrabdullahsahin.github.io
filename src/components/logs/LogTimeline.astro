@@ -1,20 +1,20 @@
 ---
-import type { PhotoData } from '~/types'
+import type { LogData } from '~/types'
 import { cn } from '~/lib/utils'
 import PolaroidStack from './PolaroidStack'
 import TimelineIcon from './TimelineIcon.astro'
 
 interface Props {
-  photoData: PhotoData[]
+  logData: LogData[]
   class?: string
 }
 
-const { photoData, class: className } = Astro.props
+const { logData, class: className } = Astro.props
 ---
 
 <div class={cn(className)}>
   {
-    photoData.map((timeline, index) => (
+    logData.map((timeline, index) => (
       <div class="timeline-item relative group/item opacity-0 animate-slide-down" style={`animation-delay: ${index * 0.1}s`}>
         <div class="flex gap-x-3">
           <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-zinc-200/50 dark:after:bg-zinc-700/50">
