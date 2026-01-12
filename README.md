@@ -1,55 +1,21 @@
 
-<div align="center">
-<img src="./src/assets/readme/logo.png" width="400" alt="Litos Logo" />
+# Abdullah Sahin
 
-# Litos
+> The World Through the Eyes of a Software Engineer
 
-![License](https://img.shields.io/github/license/Dnzzk2/Litos?color=blue&style=flat-square)
 ![Astro](https://img.shields.io/badge/Astro-v5.0-orange?style=flat-square&logo=astro)
 ![React](https://img.shields.io/badge/React-v19.0-blue?style=flat-square&logo=react)
 ![Tailwind](https://img.shields.io/badge/TailwindCSS-v4.0-38b2ac?style=flat-square&logo=tailwindcss)
 ![TypeScript](https://img.shields.io/badge/TypeScript-v5.0-blue?style=flat-square&logo=typescript)
 
-**A modern, elegant, and performance-focused blogging theme built for developers.**
-
-[Demo](https://litos.vercel.app/) · [Report Bug](https://github.com/Dnzzk2/Litos/issues) · [Request Feature](https://github.com/Dnzzk2/Litos/issues)
-
-</div>
-
-
-## Introduction
-
-Litos is a comprehensive blogging theme crafted with **Astro**, **React**, and **TailwindCSS**. It is designed to provide developers with a clean, professional, and highly customizable platform to showcase their work, thoughts, and photography.
-
-Unlike traditional themes, Litos emphasizes visual aesthetics without compromising on performance. It features fluid animations, a polished design system, and a robust set of built-in components to help you build your personal brand effectively.
-
-![Cover image](./src/assets/readme/readme.webp)
-
-## Key Features
-
-- **Modern Architecture**: Powered by Astro 5 for blazing fast performance and React 19 for dynamic interactivity.
-- **Elegant Design**: A fully responsive, meticulously crafted UI using TailwindCSS 4.
-- **Rich Content Support**:
-  - **Posts**: Multiple layout options (compact, cover image) with extensive markdown support.
-  - **Projects**: Dedicated section to showcase your portfolio with filterable tags.
-  - **Photos**: A beautiful masonry layout for your photography collections.
-- **Developer Centric**:
-  - **Skills Showcase**: Visually represented technical stack configuration.
-  - **Code Highlighting**: Integrated Expressive Code for beautiful syntax highlighting.
-  - **Mathematical Scripts**: Katex support for rendering math equations.
-- **Integrated Features**:
-  - **Comments**: Gitalk integration for GitHub-based comments.
-  - **SEO**: Built-in support for sitemaps, robots.txt, and meta tags.
-  - **Analytics**: Configurable support for Busuanzi and Umami analytics.
-  - **Dark Mode**: Native support for light and dark themes.
+Welcome to my personal website source code. This project is built with **Astro**, **React**, and **TailwindCSS**.
 
 ## Getting Started
 
-Follow these simple steps to set up your Litos project locally.
+Follow these steps to run the project locally.
 
 ### Prerequisites
 
-Ensure you have the following installed on your machine:
 - **Node.js** (v18 or higher)
 - **pnpm** (recommended package manager)
 
@@ -58,8 +24,8 @@ Ensure you have the following installed on your machine:
 1.  **Clone the repository**
 
     ```bash
-    git clone https://github.com/Dnzzk2/Litos.git
-    cd Litos
+    git clone https://github.com/mrabdullahsahin/mrabdullahsahin.github.io.git
+    cd mrabdullahsahin.github.io
     ```
 
 2.  **Install dependencies**
@@ -76,60 +42,13 @@ Ensure you have the following installed on your machine:
 
     Your site should now be running at `http://localhost:4321`.
 
-## Configuration
+## Deployment
 
-Litos is designed to be easily configurable. The primary configuration file is located at `src/config.ts`.
+This project is configured to deploy automatically to GitHub Pages using GitHub Actions.
 
-### Site Settings
-Modify the `SITE` constant to update basic site information:
-```typescript
-export const SITE: Site = {
-  title: 'Litos',
-  description: 'Your site description here.',
-  website: 'https://your-domain.com',
-  author: 'Your Name',
-  // ...other settings
-}
-```
-
-### Feature Toggles
-You can enable or disable specific features like the Skills Showcase or GitHub integration directly in the config file:
-```typescript
-export const SKILLSSHOWCASE_CONFIG = {
-  SKILLS_ENABLED: true,
-  // ...
-}
-
-export const GITHUB_CONFIG = {
-  ENABLED: true,
-  // ...
-}
-```
-
-### Navigation
-Links for the Header and Footer can be managed via `HEADER_LINKS` and `FOOTER_LINKS`.
-
-## Project Management
-
-You can manage your projects in `src/content/projects/`.
-
-### Frontmatter Options
-
-| Field | Type | Description | Example |
-| :--- | :--- | :--- | :--- |
-| `name` | string | Name of the project | `My Project` |
-| `description` | string | Short description | `A cool app.` |
-| `started` | number | Year started (Sorts by new) | `2024` |
-| `status` | string | Project status | `'Active'` |
-| `postLink` | string | Link to blog story | `https://...` or `/posts/...` |
-
-### Status Options
-The `status` field controls the badge color on the project card:
-
-- **Active**: Green (Default)
-- **Inactive**: Red
-- **Shut it down**: Red
-- **Sold it**: Gold / Amber
+1.  Push your changes to the `master` branch.
+2.  Ensure your GitHub repository settings under **Pages** has **Source** set to **GitHub Actions**.
+3.  The workflow defined in `.github/workflows/gh-pages.yml` will automatically build and deploy the site.
 
 ## Scripts
 
@@ -140,23 +59,3 @@ The `status` field controls the badge color on the project card:
 | `pnpm preview` | Previews the built production site locally. |
 | `pnpm format` | Formats code using Prettier. |
 | `pnpm check` | Runs Astro check for diagnostics. |
-
-## License
-
-Distributed under the MIT License. See [MIT LICENSE](LICENSE) for more information.
-
-## Star History
-
-<a href="https://www.star-history.com/#Dnzzk2/Litos&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Dnzzk2/Litos&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Dnzzk2/Litos&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Dnzzk2/Litos&type=date&legend=top-left" />
- </picture>
-</a>
-
----
-
-<p align="center">
-made with 💗 by <a href="https://github.com/Dnzzk2">Dnzzk2</a> !
-</p>
