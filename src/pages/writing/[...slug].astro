@@ -1,0 +1,49 @@
+---
+import { getCollection, render } from 'astro:content'
+import ArticleLayout from '../../layouts/ArticleLayout.astro'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('writing', ({ data }) => !data.draft)
+  const sorted = posts.sort((a, b) => b.data.date.localeCompare(a.data.date))
+
+  return sorted.map((post, i) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      prevPost: sorted[i + 1]
+        ? {
+            slug: sorted[i + 1].id,
+            title: sorted[i + 1].data.title,
+            titleTr: sorted[i + 1].data.titleTr,
+          }
+        : undefined,
+      nextPost: sorted[i - 1]
+        ? {
+            slug: sorted[i - 1].id,
+            title: sorted[i - 1].data.title,
+            titleTr: sorted[i - 1].data.titleTr,
+          }
+        : undefined,
+    },
+  }))
+}
+
+const { post, prevPost, nextPost } = Astro.props
+const { Content } = await render(post)
+---
+
+<ArticleLayout
+  title={post.data.title}
+  titleTr={post.data.titleTr}
+  description={post.data.description}
+  descriptionTr={post.data.descriptionTr}
+  date={post.data.date}
+  category={post.data.category}
+  categoryTr={post.data.categoryTr}
+  readTime={post.data.readTime}
+  slug={post.id}
+  prevPost={prevPost}
+  nextPost={nextPost}
+>
+  <Content />
+</ArticleLayout>

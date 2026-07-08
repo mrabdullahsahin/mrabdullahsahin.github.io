@@ -1,0 +1,125 @@
+---
+import BaseLayout from './BaseLayout.astro'
+
+interface Props {
+  title: string
+  titleTr: string
+  description: string
+  descriptionTr: string
+  date: string
+  category: string
+  categoryTr: string
+  readTime: number
+  slug: string
+  prevPost?: { slug: string; title: string; titleTr: string }
+  nextPost?: { slug: string; title: string; titleTr: string }
+}
+
+const {
+  title,
+  titleTr,
+  description,
+  descriptionTr,
+  date,
+  category,
+  categoryTr,
+  readTime,
+  slug,
+  prevPost,
+  nextPost,
+} = Astro.props
+
+const [year, month] = date.split('-')
+const dateLabel = `${year}·${month}`
+---
+
+<BaseLayout
+  title={`${title} — Abdullah Şahin`}
+  description={description}
+  canonical={`/writing/${slug}`}
+  type="article"
+  article={{ publishedTime: date, section: category }}
+  extraHead={`<link rel="stylesheet" href="/assets/article.css" />`}
+  bodyClass="article-page"
+>
+  <div id="progress" aria-hidden="true"></div>
+  <nav id="toc" aria-label="Table of contents"></nav>
+
+  <main id="main" data-screen-label={`Article: ${slug}`}>
+    <p class="crumb">
+      <a href="/" data-en="index" data-tr="dizin">index</a>
+      <span>/</span>
+      <a href="/writing" data-en="writing" data-tr="yazılar">writing</a>
+      <span>/</span>
+      {slug}
+    </p>
+
+    <article class="art-layout">
+      <header class="art-hero">
+        <div class="art-meta">
+          <span data-en={category} data-tr={categoryTr}>{category}</span>
+          <span>{dateLabel}</span>
+          <span class="read-time">{readTime} min read</span>
+        </div>
+
+        <h1>
+          <span data-en={title} set:html={title} />
+          <span data-tr={titleTr} set:html={titleTr} style="display:none" />
+        </h1>
+
+        <p class="standfirst" data-en={description} data-tr={descriptionTr}>
+          {description}
+        </p>
+
+        <div class="reader-bar">
+          <span class="read-time">{readTime} min read</span>
+          <span class="grow"></span>
+          <button class="rb-btn" id="fs-minus" aria-label="Smaller text">A−</button>
+          <button class="rb-btn" id="fs-plus" aria-label="Larger text">A+</button>
+          <button class="rb-btn" id="font-toggle" aria-pressed="false" title="Serif / Sans"
+            >Aa</button
+          >
+        </div>
+
+        <details class="toc-mobile">
+          <summary>Contents</summary>
+          <ol></ol>
+        </details>
+      </header>
+
+      <div class="article-body">
+        <slot />
+      </div>
+
+      {
+        (prevPost || nextPost) && (
+          <nav class="art-pn" aria-label="More writing">
+            {nextPost && (
+              <a class="next" href={`/writing/${nextPost.slug}`}>
+                <span class="lbl" data-en="newer →" data-tr="daha yeni →">
+                  newer →
+                </span>
+                <span data-en={nextPost.title} data-tr={nextPost.titleTr}>
+                  {nextPost.title}
+                </span>
+              </a>
+            )}
+            {prevPost && (
+              <a class="prev" href={`/writing/${prevPost.slug}`}>
+                <span class="lbl" data-en="← older" data-tr="← daha eski">
+                  ← older
+                </span>
+                <span data-en={prevPost.title} data-tr={prevPost.titleTr}>
+                  {prevPost.title}
+                </span>
+              </a>
+            )}
+          </nav>
+        )
+      }
+    </article>
+  </main>
+
+  <button id="totop" aria-label="Back to top">↑</button>
+  <script is:inline src="/assets/reader.js"></script>
+</BaseLayout>

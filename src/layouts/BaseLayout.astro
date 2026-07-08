@@ -1,0 +1,95 @@
+---
+import Head from '../components/Head.astro'
+
+interface Props {
+  title: string
+  description: string
+  canonical?: string
+  type?: 'website' | 'article'
+  article?: {
+    publishedTime: string
+    section: string
+  }
+  bodyClass?: string
+  extraHead?: string
+}
+
+const { title, description, canonical, type, article, bodyClass, extraHead } = Astro.props
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <Head
+      title={title}
+      description={description}
+      canonical={canonical}
+      type={type}
+      article={article}
+    />
+    <link rel="stylesheet" href="/assets/minimal.css" />
+    {extraHead && <Fragment set:html={extraHead} />}
+
+    <script is:inline>
+      ;(function () {
+        try {
+          var th =
+            localStorage.getItem('as-theme') ||
+            (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          document.documentElement.setAttribute('data-theme', th)
+          var l =
+            localStorage.getItem('as-lang') ||
+            ((navigator.language || 'en').slice(0, 2).toLowerCase() === 'tr' ? 'tr' : 'en')
+          document.documentElement.setAttribute('lang', l)
+        } catch (e) {}
+      })()
+    </script>
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main" data-en="Skip to content" data-tr="İçeriğe geç">
+      Skip to content
+    </a>
+
+    <canvas id="field" aria-hidden="true"></canvas>
+
+    <div class="shell">
+      <header class="top" data-screen-label="Header">
+        <a class="brand" href="/">abdullahsahin.org</a>
+        <nav class="controls" aria-label="Settings">
+          <button class="ctrl" data-set-lang="en" aria-pressed="false">EN</button>
+          <button class="ctrl" data-set-lang="tr" aria-pressed="false">TR</button>
+          <button class="ctrl" id="theme-toggle" aria-label="Theme">☀</button>
+        </nav>
+      </header>
+
+      <slot />
+
+      <footer data-screen-label="Footer">
+        <span>© <span id="year">{new Date().getFullYear()}</span> Abdullah Şahin</span>
+        <span class="sky-ctl">
+          <button class="formula" id="formula" aria-pressed="false" title="?">
+            <span class="hint" data-en="← sky" data-tr="← gökyüzü">← sky</span>
+          </button>
+          <span class="sky-opts" role="group" aria-label="sky scene">
+            <button class="sky-opt" data-sky="tusi" aria-pressed="false">ṭūsī</button>
+            <button class="sky-opt" data-sky="astrolabe" aria-pressed="false">astrolāb</button>
+            <button class="sky-opt" data-sky="girih" aria-pressed="false">girih</button>
+            <button class="sky-opt" data-sky="flow" aria-pressed="false">flow</button>
+            <button class="sky-opt" data-sky="hayyam" aria-pressed="false">hayyâm</button>
+            <button class="sky-opt" data-sky="battani" aria-pressed="false">battânî</button>
+            <button class="sky-opt" data-sky="biruni" aria-pressed="false">bîrûnî</button>
+            <button class="sky-opt" data-sky="harezmi" aria-pressed="false">hârizmî</button>
+            <button class="sky-opt" data-sky="buzcan" aria-pressed="false">bûzcânî</button>
+            <button class="sky-opt" data-sky="sabit" aria-pressed="false">sâbit</button>
+            <button class="sky-opt" data-sky="kuscu" aria-pressed="false">kuşçu</button>
+            <button class="sky-opt" data-sky="macriti" aria-pressed="false">macrîtî</button>
+          </span>
+        </span>
+      </footer>
+    </div>
+
+    <div id="tweaks-root"></div>
+    <script is:inline src="/assets/sky.js"></script>
+    <script is:inline src="/assets/app.js"></script>
+  </body>
+</html>

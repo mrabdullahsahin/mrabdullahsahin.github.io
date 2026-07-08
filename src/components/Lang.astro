@@ -1,0 +1,10 @@
+---
+interface Props {
+  lang: 'en' | 'tr'
+}
+const { lang } = Astro.props
+---
+
+<div data-lang={lang}>
+  <slot />
+</div>

@@ -1,0 +1,129 @@
+---
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+
+const statusColors: Record<string, string> = {
+  live: 'var(--st-live)',
+  acquired: 'var(--st-acquired)',
+  'open-source': 'var(--st-live)',
+  paused: 'var(--st-paused)',
+  sunset: 'var(--st-sunset)',
+  failed: 'var(--st-failed)',
+}
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => !data.draft)
+  const sorted = projects.sort((a, b) => a.data.order - b.data.order)
+  return sorted.map((project, i) => ({
+    params: { slug: project.id },
+    props: {
+      project,
+      prev: sorted[i - 1],
+      next: sorted[i + 1],
+    },
+  }))
+}
+
+const { project, prev, next } = Astro.props
+const { Content } = await render(project)
+---
+
+<BaseLayout
+  title={`${project.data.name} — Abdullah Şahin`}
+  description={project.data.description}
+  canonical={`/projects/${project.id}`}
+  extraHead={`<link rel="stylesheet" href="/assets/article.css" />`}
+>
+  <main id="main">
+    <p class="crumb">
+      <a href="/" data-en="index" data-tr="dizin">index</a>
+      <span>/</span>
+      <a href="/#projects" data-en="projects" data-tr="projeler">projects</a>
+      <span>/</span>
+      {project.data.name}
+    </p>
+
+    <section class="proj-hero">
+      <h1>
+        {project.data.name}
+        <span class="status" class:list={[project.data.status]} style={`--c: ${statusColors[project.data.status]}`}>
+          <span class="dot"></span>
+          <span data-en={project.data.statusLabel} data-tr={project.data.statusLabelTr}>
+            {project.data.statusLabel}
+          </span>
+        </span>
+      </h1>
+      <p
+        class="one-liner"
+        data-en={project.data.description}
+        data-tr={project.data.descriptionTr}
+      >
+        {project.data.description}
+      </p>
+    </section>
+
+    <div class="meta-grid">
+      <div class="mg">
+        <span class="k" data-en="Years" data-tr="Yıllar">Years</span>
+        <span class="v">{project.data.years}</span>
+      </div>
+      {project.data.stack && (
+        <div class="mg">
+          <span class="k" data-en="Stack" data-tr="Yığın">Stack</span>
+          <span class="v">{project.data.stack}</span>
+        </div>
+      )}
+      {project.data.role && (
+        <div class="mg">
+          <span class="k" data-en="Role" data-tr="Rol">Role</span>
+          <span class="v" data-en={project.data.role} data-tr={project.data.roleTr ?? project.data.role}>
+            {project.data.role}
+          </span>
+        </div>
+      )}
+      {project.data.statusValue && (
+        <div class="mg">
+          <span class="k" data-en="Status" data-tr="Durum">Status</span>
+          <span
+            class="v"
+            data-en={project.data.statusValue}
+            data-tr={project.data.statusValueTr ?? project.data.statusValue}
+          >
+            {project.data.statusValue}
+          </span>
+        </div>
+      )}
+    </div>
+
+    <article class="proj-body">
+      <Content />
+    </article>
+
+    {project.data.timeline.length > 0 && (
+      <ol class="tl">
+        {project.data.timeline.map((step) => (
+          <li class:list={[{ mark: step.mark }]}>
+            <span class="when" data-en={step.date} data-tr={step.dateTr ?? step.date}>{step.date}</span>
+            <span class="node"></span>
+            <span class="what" data-en={step.en} data-tr={step.tr} set:html={step.en}></span>
+          </li>
+        ))}
+      </ol>
+    )}
+
+    <nav class="pn" aria-label="Projects">
+      {prev && (
+        <a href={`/projects/${prev.id}`}>
+          <span class="lbl" data-en="← previous" data-tr="← önceki">← previous</span>
+          {prev.data.name}
+        </a>
+      )}
+      {next && (
+        <a class="next" href={`/projects/${next.id}`}>
+          <span class="lbl" data-en="next →" data-tr="sonraki →">next →</span>
+          {next.data.name}
+        </a>
+      )}
+    </nav>
+  </main>
+</BaseLayout>

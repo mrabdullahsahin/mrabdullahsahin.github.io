@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
+
+const posts = await getCollection('writing', ({ data }) => !data.draft)
+const sorted = posts.sort((a, b) => b.data.date.localeCompare(a.data.date))
+
+const byYear = sorted.reduce(
+  (acc, post) => {
+    const year = post.data.date.split('-')[0]
+    if (!acc[year]) acc[year] = []
+    acc[year].push(post)
+    return acc
+  },
+  {} as Record<string, typeof sorted>
+)
+
+const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a))
+---
+
+<BaseLayout
+  title="Writing — Abdullah Şahin"
+  description="Essays on software, education and community."
+  canonical="/writing"
+  extraHead={`<link rel="stylesheet" href="/assets/article.css" />`}
+>
+  <main id="main" data-screen-label="Writing index">
+    <p class="crumb">
+      <a href="/" data-en="index" data-tr="dizin">index</a>
+      <span>/</span>
+      <span data-en="writing" data-tr="yazılar">writing</span>
+    </p>
+
+    <section class="wl-hero">
+      <h1
+        data-en="Notes on building things, <em>slowly and well</em>"
+        data-tr="Bir şeyleri <em>yavaş ve iyi</em> inşa etmek üzerine notlar"
+      >
+        Notes on building things, <em>slowly and well</em>
+      </h1>
+      <p
+        class="sub"
+        data-en="Essays from the workbench — what side projects and community building taught me about software."
+        data-tr="Tezgâhtan denemeler — side project'lerin ve topluluk kurmanın bana yazılım hakkında öğrettikleri."
+      >
+        Essays from the workbench — what side projects and community building taught me about software.
+      </p>
+    </section>
+
+    {years.map((year) => (
+      <section class="year-group">
+        <p class="year-label">{year}</p>
+        <ul class="wlist">
+          {byYear[year].map((post) => {
+            const month = post.data.date.split('-')[1]
+            return (
+              <li>
+                <a class="wrow" href={`/writing/${post.id}`}>
+                  <span class="t" data-en={post.data.title} data-tr={post.data.titleTr}>
+                    {post.data.title}
+                  </span>
+                  <span class="meta-r">
+                    <span
+                      class="cat"
+                      data-en={post.data.category}
+                      data-tr={post.data.categoryTr}
+                    >
+                      {post.data.category}
+                    </span>
+                    <span
+                      data-en={`${month} · ${post.data.readTime} min`}
+                      data-tr={`${month} · ${post.data.readTime} dk`}
+                    >
+                      {month} · {post.data.readTime} min
+                    </span>
+                  </span>
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      </section>
+    ))}
+  </main>
+</BaseLayout>
