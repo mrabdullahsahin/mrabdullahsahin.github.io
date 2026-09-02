@@ -1,35 +1,22 @@
 import { glob } from 'astro/loaders'
 import { defineCollection, z } from 'astro:content'
-import { POSTS_CONFIG } from '~/config'
-import type { CoverLayout, PostType } from '~/types'
 
-const posts = defineCollection({
+const writing = defineCollection({
   loader: glob({
     pattern: '**/*.{md,mdx}',
-    base: './src/content/posts',
+    base: './src/content/writing',
   }),
-  schema: ({ image }) =>
-    z
-      .object({
-        title: z.string(),
-        description: z.string(),
-        pubDate: z.date(),
-        tags: z.array(z.string()).optional(),
-        updatedDate: z.date().optional(),
-        author: z.string().default(POSTS_CONFIG.author),
-        cover: image().optional(),
-        ogImage: image().optional(),
-        recommend: z.boolean().default(false),
-        postType: z.custom<PostType>().optional(),
-        coverLayout: z.custom<CoverLayout>().optional(),
-        pinned: z.boolean().default(false),
-        draft: z.boolean().default(false),
-        license: z.string().optional(),
-      })
-      .transform((data) => ({
-        ...data,
-        ogImage: POSTS_CONFIG.ogImageUseCover && data.cover ? data.cover : data.ogImage,
-      })),
+  schema: z.object({
+    title: z.string(),
+    titleTr: z.string(),
+    date: z.string(),
+    category: z.string(),
+    categoryTr: z.string(),
+    readTime: z.number(),
+    description: z.string(),
+    descriptionTr: z.string(),
+    draft: z.boolean().default(false),
+  }),
 })
 
 const projects = defineCollection({
@@ -37,23 +24,33 @@ const projects = defineCollection({
     pattern: '**/*.{md,mdx}',
     base: './src/content/projects',
   }),
-  schema: ({ image }) =>
-    z.object({
-      name: z.string(),
-      description: z.string(),
-      githubUrl: z.string().optional(),
-      website: z.string().optional(),
-      type: z.string(),
-      icon: image().optional(),
-      imageClass: z.string().optional(),
-      star: z.number().nullish(),
-      fork: z.number().nullish(),
-      draft: z.boolean().default(false),
-      // New fields
-      started: z.number().optional(), // Year
-      status: z.enum(['Active', 'Inactive', 'Shut it down', 'Sold it']).default('Active'),
-      postLink: z.string().optional(),
-    }),
+  schema: z.object({
+    name: z.string(),
+    years: z.string(),
+    status: z.enum(['live', 'acquired', 'open-source', 'paused', 'sunset', 'failed']),
+    statusLabel: z.string(),
+    statusLabelTr: z.string(),
+    description: z.string(),
+    descriptionTr: z.string(),
+    stack: z.string().optional(),
+    role: z.string().optional(),
+    roleTr: z.string().optional(),
+    statusValue: z.string().optional(),
+    statusValueTr: z.string().optional(),
+    timeline: z
+      .array(
+        z.object({
+          date: z.string(),
+          dateTr: z.string().optional(),
+          en: z.string(),
+          tr: z.string(),
+          mark: z.boolean().default(false),
+        }),
+      )
+      .default([]),
+    order: z.number().default(99),
+    draft: z.boolean().default(false),
+  }),
 })
 
-export const collections = { posts, projects }
+export const collections = { writing, projects }

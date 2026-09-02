@@ -1,91 +1,104 @@
 ---
-import { SITE, SKILLSSHOWCASE_CONFIG, SOCIAL_LINKS } from '~/config.ts'
-import { GITHUB_CONFIG, POSTS_CONFIG } from '~/config.ts'
-import Layout from '~/layouts/Layout.astro'
-import SectionDivider from '~/components/base/SectionDivider.astro'
-import GithubContributions from '~/components/base/GithubContributions.tsx'
-import SocialLink from '~/components/base/SocialLink.astro'
-import List from '~/components/posts/card/List.astro'
-import SkillsShowcase from '~/components/base/SkillsShowcase.astro'
-import { getNumPosts, getPinnedPosts } from '~/lib/data'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
 
-const { ENABLED, GITHUB_USERNAME, TOOLTIP_ENABLED } = GITHUB_CONFIG
-const { size, type } = POSTS_CONFIG.homePageConfig
-const { SKILLS_ENABLED, SKILLS_DATA } = SKILLSSHOWCASE_CONFIG
+const projects = await getCollection('projects', ({ data }) => !data.draft)
+const writing = await getCollection('writing', ({ data }) => !data.draft)
 
-let showPosts = []
-const pinnedPosts = await getPinnedPosts()
-const hasPinnedPosts = pinnedPosts.length > 0
-if (hasPinnedPosts) {
-  showPosts = pinnedPosts
-} else {
-  showPosts = await getNumPosts(size)
+const sortedProjects = projects.sort((a, b) => a.data.order - b.data.order)
+
+const recentWriting = writing
+  .sort((a, b) => b.data.date.localeCompare(a.data.date))
+  .slice(0, 3)
+
+const statusColors: Record<string, string> = {
+  live: 'var(--st-live)',
+  acquired: 'var(--st-acquired)',
+  'open-source': 'var(--st-live)',
+  paused: 'var(--st-paused)',
+  sunset: 'var(--st-sunset)',
+  failed: 'var(--st-failed)',
 }
 ---
 
-<Layout title="Readme" description={SITE.description}>
-  <div class="relative z-[1]">
-    <div class="fade-up">
-      <div class="py-8 pb-10 px-6 sm:px-8">
-        <h1 class="flex flex-col gap-2">
-          <span class="text-4xl sm:text-5xl tracking-tight"> Abdullah Sahin </span>
-          <span class="text-muted-foreground font-light text-xl sm:text-2xl block tracking-wide text-balance"> Software Engineer </span>
-        </h1>
-        <div class="pro text-muted-foreground text-pretty">
-          <p>
-            Hello, I’m Abdullah. I’ve been in the software world for over 10 years. Throughout this time, I’ve worked on many different
-            projects and collaborated with various teams, and I’ve realized one thing: what truly makes a project valuable is not just the
-            end result, but the path taken to reach it. <br />
-            <br /> 🇹🇷 -> Turkish Posts <br /> 🇬🇧 -> English Posts
-          </p>
-        </div>
-        <div class="mt-6 flex gap-6">
-          {
-            SOCIAL_LINKS.map((item) => {
-              return (
-                <SocialLink href={item.url} icon={item.icon} aria-label={`Link of ${item.name}`} count={item.count} label="followers" />
-              )
-            })
-          }
-        </div>
+<BaseLayout
+  title="Abdullah Şahin"
+  description="Software engineer. Side projects and writing about what they teach me."
+  canonical="/"
+>
+  <main id="main">
+
+    <section class="hero" data-screen-label="Hero" style="padding-top: 17vh;">
+      <h1
+        data-en="Software engineer. I build <em>side projects</em> and write about what they teach me."
+        data-tr="Yazılım mühendisi. <em>Side project</em> üretir, bana öğrettiklerini yazarım."
+      >
+        Software engineer. I build <em>side projects</em> and write about what they teach me.
+      </h1>
+      <p
+        class="sub"
+        data-en="Some are alive, a few are gone. All of them are listed below — the honest version."
+        data-tr="Bazıları yaşıyor, birkaçı yok artık. Hepsi aşağıda — dürüst hâliyle."
+      >
+        Some are alive, a few are gone. All of them are listed below — the honest version.
+      </p>
+      <div class="hero-links">
+        <a href="mailto:hello@abdullahsahin.org">hello@abdullahsahin.org</a>
+        <a href="https://github.com/mrabdullahsahin" rel="me">github</a>
+        <a href="/writing" data-en="writing →" data-tr="yazılar →">writing →</a>
       </div>
-      {
-        ENABLED && (
-          <>
-            <SectionDivider />
-            <div class="py-8 pb-10 px-6 max-md:px-6">
-              <div class="px-2 max-md:px-0">
-                <h2 class="text-2xl sm:text-3xl">Spotlight</h2>
-                <p class="text-muted-foreground mb-6 mt-1">Most recent contributions.</p>
-              </div>
-              <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:load transition:animate="none" />
-            </div>
-          </>
-        )
-      }
-      {
-        SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
-          <>
-            <SectionDivider />
-            <div class="py-8 pb-10 px-6 max-md:px-6">
-              <div class="px-2 max-md:px-0">
-                <h2 class="text-2xl sm:text-3xl tracking-tight">Skills</h2>
-                <p class="text-muted-foreground mb-6 mt-1">Here are some skills I have used:</p>
-              </div>
-              <SkillsShowcase skillsData={SKILLS_DATA} />
-            </div>
-          </>
-        )
-      }
-      <SectionDivider />
-      <div class="py-8 pb-10 px-6 sm:px-8">
-        <h2 class="text-2xl sm:text-3xl tracking-tight">Posts</h2>
-        <p class="text-muted-foreground mb-6 mt-1">
-          {hasPinnedPosts ? `Pinned` : 'Recent'}
-          {showPosts.length} posts, worth a look.
-        </p>
-        <List posts={showPosts} {type} coverLayout={POSTS_CONFIG.homePageConfig?.coverLayout} />
-      </div>
-    </div>
-  </div>
-</Layout>
+    </section>
+
+    <section id="projects" data-screen-label="Projects">
+      <h2 class="sec-label" data-en="Projects" data-tr="Projeler">Projects</h2>
+      <ul class="plist">
+        {sortedProjects.map((project) => (
+          <li>
+            <a class="prow" href={`/projects/${project.id}`}>
+              <span class="name">
+                {project.data.name}
+                <span class="yr">{project.data.years}</span>
+              </span>
+              <span class="status" style={`--c: ${statusColors[project.data.status]}`}>
+                <span class="dot"></span>
+                <span data-en={project.data.statusLabel} data-tr={project.data.statusLabelTr}>
+                  {project.data.statusLabel}
+                </span>
+              </span>
+              <span
+                class="desc"
+                data-en={project.data.description}
+                data-tr={project.data.descriptionTr}
+              >
+                {project.data.description}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section id="writing" data-screen-label="Writing">
+      <h2 class="sec-label" data-en="Writing" data-tr="Yazılar">Writing</h2>
+      <ul class="wlist">
+        {recentWriting.map((post) => {
+          const [year, month] = post.data.date.split('-')
+          return (
+            <li>
+              <a class="wrow" href={`/writing/${post.id}`}>
+                <span class="t" data-en={post.data.title} data-tr={post.data.titleTr}>
+                  {post.data.title}
+                </span>
+                <span class="d">{year}·{month}</span>
+              </a>
+            </li>
+          )
+        })}
+      </ul>
+      <a class="more-link" href="/writing" data-en="all writing →" data-tr="tüm yazılar →">
+        all writing →
+      </a>
+    </section>
+
+  </main>
+</BaseLayout>

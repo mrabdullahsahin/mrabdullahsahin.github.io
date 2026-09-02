@@ -1,61 +1,105 @@
+# Abdullah Şahin
 
-# Abdullah Sahin
-
-> The World Through the Eyes of a Software Engineer
+> abdullahsahin.org — Software engineer. Side projects and writing about what they teach me.
 
 ![Astro](https://img.shields.io/badge/Astro-v5.0-orange?style=flat-square&logo=astro)
-![React](https://img.shields.io/badge/React-v19.0-blue?style=flat-square&logo=react)
-![Tailwind](https://img.shields.io/badge/TailwindCSS-v4.0-38b2ac?style=flat-square&logo=tailwindcss)
 ![TypeScript](https://img.shields.io/badge/TypeScript-v5.0-blue?style=flat-square&logo=typescript)
 
-Welcome to my personal website source code. This project is built with **Astro**, **React**, and **TailwindCSS**.
+Personal website built with **Astro** and **MDX**. Bilingual (EN/TR), static, deployed to GitHub Pages.
 
 ## Getting Started
 
-Follow these steps to run the project locally.
-
 ### Prerequisites
 
-- **Node.js** (v18 or higher)
-- **pnpm** (recommended package manager)
+- **Node.js** v18+
+- **pnpm**
 
 ### Installation
 
-1.  **Clone the repository**
+```bash
+git clone https://github.com/mrabdullahsahin/mrabdullahsahin.github.io.git
+cd mrabdullahsahin.github.io
+pnpm install
+pnpm dev
+```
 
-    ```bash
-    git clone https://github.com/mrabdullahsahin/mrabdullahsahin.github.io.git
-    cd mrabdullahsahin.github.io
-    ```
+Site runs at `http://localhost:4321`.
 
-2.  **Install dependencies**
+To stop the development server, press `Ctrl + C` in the terminal.
 
-    ```bash
-    pnpm install
-    ```
+## Content
 
-3.  **Start the development server**
+### Writing (`src/content/writing/`)
 
-    ```bash
-    pnpm dev
-    ```
+```mdx
+---
+title: 'English Title'
+titleTr: 'Türkçe Başlık'
+date: '2024-01-15'
+category: 'engineering'
+categoryTr: 'mühendislik'
+readTime: 8
+description: 'English description.'
+descriptionTr: 'Türkçe açıklama.'
+draft: false
+---
 
-    Your site should now be running at `http://localhost:4321`.
+import Lang from '../../components/Lang.astro'
+
+<Lang lang="en">
+
+English content...
+
+</Lang>
+
+<Lang lang="tr">
+
+Türkçe içerik...
+
+</Lang>
+```
+
+### Projects (`src/content/projects/`)
+
+```mdx
+---
+name: 'Project Name'
+years: '2023 —'
+status: 'live'          # live | acquired | open-source | paused | sunset | failed
+statusLabel: 'active'
+statusLabelTr: 'aktif'
+description: 'English description.'
+descriptionTr: 'Türkçe açıklama.'
+order: 1
+draft: false
+---
+
+import Lang from '../../components/Lang.astro'
+
+<Lang lang="en">
+
+English project story...
+
+</Lang>
+
+<Lang lang="tr">
+
+Türkçe proje hikayesi...
+
+</Lang>
+```
 
 ## Deployment
 
-This project is configured to deploy automatically to GitHub Pages using GitHub Actions.
+Push to the `development` branch — GitHub Actions builds and deploys automatically to GitHub Pages.
 
-1.  Push your changes to the `master` branch.
-2.  Ensure your GitHub repository settings under **Pages** has **Source** set to **GitHub Actions**.
-3.  The workflow defined in `.github/workflows/gh-pages.yml` will automatically build and deploy the site.
+Workflow: `.github/workflows/gh-pages.yml`
 
 ## Scripts
 
 | Script | Description |
 | :--- | :--- |
-| `pnpm dev` | Starts the local development server. |
-| `pnpm build` | Builds the site for production. |
-| `pnpm preview` | Previews the built production site locally. |
-| `pnpm format` | Formats code using Prettier. |
-| `pnpm check` | Runs Astro check for diagnostics. |
+| `pnpm dev` | Start local development server |
+| `pnpm build` | Build for production |
+| `pnpm preview` | Preview production build locally |
+| `pnpm check` | Run Astro type checking |
